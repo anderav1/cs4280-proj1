@@ -2,9 +2,8 @@
 //
 //
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "scanner.h"
+#include "token.h"
 
 
 const int fsaTable[10][15] = {
@@ -19,13 +18,6 @@ const int fsaTable[10][15] = {
 /* S7 */  {1004,   7,1004,1004,1004,1004,1004,1004,1004,1004,1004,1004,1004,1004,1004 },
 /* S8 */  {1005,1005,1005,1005,1005,1005,1005,1005,1005,1005,1005,1005,1005,1005,1005 },
 /* S9 */  {  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,   8,   8,  -1 },
-}
+};
 
-// TODO: map token and error types to int values
-// IdTk    = 1001
-// CommTk  = 1002
-// NumTk   = 1003
-// KeyWdTk = 1004
-// OpTk    = 1005
-// EOFTk   = 1006
-// ERR     = -1
+
