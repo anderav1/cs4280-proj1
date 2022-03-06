@@ -4,7 +4,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <string>
 #include "scanner.h"
 #include "token.h"
 
@@ -23,15 +23,15 @@ const int fsaTable[10][15] = {
 /* S9 */  {  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,   8,   8,  -1 },
 };
 
-// getToken
+// scanner
 // Scan the next token
-token scan(FILE* fp, int line) {
+token scanner(FILE* fp, int line) {
   token tkn;
 
   int state = 0;
   int nextState = 0;
   
-  char* str = "";
+  std::string str = "";
   char curr;
   
   int col;  // FSA table column
@@ -58,6 +58,8 @@ token scan(FILE* fp, int line) {
       
     }
   }
+  
+  return tkn;
 }
 
 int getTableCol(char ch) {

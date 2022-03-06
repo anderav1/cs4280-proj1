@@ -5,7 +5,9 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-typedef enum tokenID {
+#include <string>
+
+enum tokenID {
   ID_TK,
   COMM_TK,
   NUM_TK,
@@ -15,7 +17,7 @@ typedef enum tokenID {
   ERR_TK
 };
 
-const char* tokenNames = [
+const std::string tokenNames[] = {
   "Identifier",
   "Comment",
   "Number",
@@ -23,11 +25,11 @@ const char* tokenNames = [
   "Operator",
   "EOF",
   "Error"
-];
+};
 
 // Respective int values for each final state
 // All final states < 0 or > 1000
-const int finalStates = [
+const int finalStates[] = {
   1001,
   1002,
   1003,
@@ -35,15 +37,15 @@ const int finalStates = [
   1005,
   1006,
   -1
-];
+};
 
 typedef struct {
   tokenID type;
-  char* str;
+  std::string str;
   int line;
 } token;
 
-const char* keywords = [
+const std::string keywords[] = {
   "Again",
   "If", 
   "Assign", 
@@ -57,6 +59,6 @@ const char* keywords = [
   "Place", 
   "Here", 
   "There"
-];
+};
 
 #endif
