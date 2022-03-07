@@ -3,8 +3,10 @@
 //
 
 #include <ctype.h>
+#include <iostream>
 #include <stdio.h>
 #include <string>
+
 #include "scanner.h"
 #include "token.h"
 
@@ -23,23 +25,25 @@ const int fsaTable[10][15] = {
 /* S9 */  {  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,   8,   8,  -1 },
 };
 
+
 // scanner
 // Scan the next token
-token scanner(FILE* fp, int line) {
+token scanner(std::istream &input) {
   token tkn;
 
   int state = 0;
   int nextState = 0;
   
   std::string str = "";
-  char curr;
+  char ch;
+  int line = 0;
   
   int col;  // FSA table column
   
-  // TODO: process chars until final state
+  // process chars until final state
   while (state >= 0 && state < 1000) {
-    curr = getc(fp);
-    col = getTableCol(curr);
+    input.get(ch);
+    col = getTableCol(ch);
     
     if (col == -1) {  // invalid char
       // TODO: return error
@@ -47,17 +51,28 @@ token scanner(FILE* fp, int line) {
       tkn.str = "Invalid token";
       tkn.line = line;
       
-      // TODO: print error message
+      // TODO: print error message?
       return tkn;
     }
     
     nextState = fsaTable[state][col];
-    if (nextState >= 1000 || nextState < 0) {  // final state
+    if (nextState >= 1000 || nextState < 0) { // final state, current char is lookahead
+      tkn.type = (tokenID)nextState;
+      tkn.str = str;
+      tkn.line = line;
       
+      return tkn;
     } else {
+      if(!isspace(ch)) str += ch;
       
+      if (ch == '\n') line++;
+      state = nextState;
     }
   }
+  
+  tkn.type = ERR_TK;
+  tkn.str = "Scanning error";
+  tkn.line = line;
   
   return tkn;
 }

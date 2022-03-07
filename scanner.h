@@ -5,9 +5,11 @@
 #ifndef SCANNER_H
 #define SCANNER_H
 
+#include <iostream>
+
 #include "token.h"
 
-token scanner(FILE* fp, int line);
+token scanner(std::istream &input);
 int getTableCol(char ch);
 
 

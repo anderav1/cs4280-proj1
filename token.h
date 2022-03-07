@@ -8,13 +8,13 @@
 #include <string>
 
 enum tokenID {
-  ID_TK,
-  COMM_TK,
-  NUM_TK,
-  KEYWD_TK,
-  OP_TK,
-  EOF_TK,
-  ERR_TK
+  ID_TK = 1001,
+  COMM_TK = 1002,
+  NUM_TK = 1003,
+  KEYWD_TK = 1004,
+  OP_TK = 1005,
+  EOF_TK = 1006,
+  ERR_TK = -1
 };
 
 const std::string tokenNames[] = {
