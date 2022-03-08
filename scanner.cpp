@@ -1,6 +1,6 @@
 // Lexi Anderson
-//
-//
+// CS4280, Proj 1
+// scanner.cpp
 
 #include <ctype.h>
 #include <iostream>
@@ -11,6 +11,7 @@
 #include "token.h"
 
 
+// 2D array representation of the FSA
 const int fsaTable[10][15] = {
           /* A-Z  a-z  0-9   *   WS    &    +    /    %    .    {    }    <    -  EOF */
 /* S0 */  {   6,   1,   5,   3,   0,   8,   8,   8,   8,   8,   8,   8,   9,  -1,1006 },
@@ -25,49 +26,85 @@ const int fsaTable[10][15] = {
 /* S9 */  {  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,   8,   8,  -1 },
 };
 
+int line = 1;
+std::string prefix = "";
 
-// scanner
-// Scan the next token
+// Scan and return the next token
+// input -- input stream (either file or cin)
 token scanner(std::istream &input) {
   token tkn;
 
   int state = 0;
   int nextState = 0;
   
-  std::string str = "";
+  std::string str = prefix + "";
   char ch;
-  int line = 0;
   
   int col;  // FSA table column
   
   // process chars until final state
   while (state >= 0 && state < 1000) {
-    input.get(ch);
+    input.get(ch);    
     col = getTableCol(ch);
     
+    if (input.eof()) col = 14;
+    
     if (col == -1) {  // invalid char
-      // TODO: return error
       tkn.type = ERR_TK;
-      tkn.str = "Invalid token";
+      tkn.str = str + ch;
       tkn.line = line;
       
-      // TODO: print error message?
       return tkn;
     }
     
     nextState = fsaTable[state][col];
+    
+    if (nextState == 1002) { // comment token; consume
+      str = "";
+      nextState = 0;
+      state = 0;
+    } else if (nextState == 1004) { // keyword token; validate
+      bool valid = false;
+      
+      for (const std::string& keywd : keywords) {
+        //std::cout << "Comparing input " << str << " to valid keyword " << keywd << std::endl;
+        if (keywd.compare(str) == 0) {
+          valid = true;
+          break;
+        }
+      }
+      
+      if (!valid) {
+        tkn.type = ERR_TK;
+        tkn.str = str;
+        tkn.line = line;
+        
+        std::cout << tkn.str << " is invalid keyword" << std::endl;
+        
+        nextState = -1;
+        state = -1;
+        
+        return tkn;
+      }
+    }
+    
     if (nextState >= 1000 || nextState < 0) { // final state, current char is lookahead
       tkn.type = (tokenID)nextState;
-      tkn.str = str;
+      
+      if (nextState == 1006) {
+        tkn.str = "EOF";
+      } else tkn.str = str;
+      
       tkn.line = line;
       
-      return tkn;
-    } else {
-      if(!isspace(ch)) str += ch;
+      //if (nextState >= 1000 && !isspace(ch)) str = ch;
       
-      if (ch == '\n') line++;
-      state = nextState;
+      return tkn;
     }
+    
+    if(!isspace(ch)) str += ch;
+    state = nextState;
+    if (ch == '\n') line++;
   }
   
   tkn.type = ERR_TK;
@@ -77,6 +114,8 @@ token scanner(std::istream &input) {
   return tkn;
 }
 
+// Return the index of the column in the FSA table corresponding to the character ch
+// ch -- character to match
 int getTableCol(char ch) {
   if (isupper(ch) > 0) return 0;
   if (islower(ch) > 0) return 1;

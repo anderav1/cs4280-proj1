@@ -1,6 +1,6 @@
 # Lexi Anderson
-#
-#
+# CS4280, Proj 1
+# Makefile
 
 
 CC = g++

@@ -1,10 +1,11 @@
 // Lexi Anderson
-//
-//
+// CS4280, Proj 1
+// token.h
 
 #ifndef TOKEN_H
 #define TOKEN_H
 
+#include <map>
 #include <string>
 
 enum tokenID {
@@ -17,14 +18,14 @@ enum tokenID {
   ERR_TK = -1
 };
 
-const std::string tokenNames[] = {
-  "Identifier",
-  "Comment",
-  "Number",
-  "Keyword",
-  "Operator",
-  "EOF",
-  "Error"
+const std::map<tokenID, std::string> tokenNames = {
+  { ID_TK, "Identifier" },
+  { COMM_TK, "Comment" },
+  { NUM_TK, "Number" },
+  { KEYWD_TK, "Keyword" },
+  { OP_TK, "Operator" },
+  { EOF_TK, "EOF" },
+  { ERR_TK, "Error" }
 };
 
 // Respective int values for each final state
@@ -39,12 +40,13 @@ const int finalStates[] = {
   -1
 };
 
-typedef struct {
+typedef struct token {
   tokenID type;
   std::string str;
   int line;
 } token;
 
+// Array of valid keywords
 const std::string keywords[] = {
   "Again",
   "If", 
