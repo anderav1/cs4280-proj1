@@ -15,23 +15,17 @@ void printArgV(int, char*[]);
 
 
 int main(int argc, char* argv[]) {
-  std::istream* fp = &std::cin;
+  std::istream* fp;
   
   if (argc == 0 || argc > 2) {
     printf("Fatal: Improper usage\nUsage:");
     printArgV(argc, argv);
     exit(1);
   }
-  else if (argc == 2) {
-    std::ifstream f{argv[1]};
-    fp = &f;
-    testScanner(*fp);
-  }
-  else if (argc == 1) {
-    testScanner(*fp);
-  }
+  else if (argc == 2) fp = new std::ifstream(argv[1]);
+  else if (argc == 1) fp = &std::cin;
   
-  //testScanner(*fp);
+  testScanner(*fp);
   
   if (fp != &std::cin) delete fp;
   
