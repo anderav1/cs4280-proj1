@@ -1,6 +1,6 @@
 # Project 1: Scanner
 
-Cs 4280: Program Translation Project
+CS 4280: Program Translation Project
 Lexi Anderson
 
 I am utilizing an FSA table for my scanner program.
@@ -13,5 +13,5 @@ Invoke the program via the command:
 scanner [file]
 ```
 
-Arguments:
+Arguments:  
 `file` (optional) -- The name of the file to read input from. Default will be `cin`.
