@@ -1,10 +1,10 @@
 # Project 1: Scanner
 
-CS 4280: Program Translation Project
-Lexi Anderson
+CS 4280: Program Translation Project  
+Lexi Anderson  
 
-I am utilizing an FSA table for my scanner program.
-The FSA table can be found at the top of the 'scanner.cpp' file.
+I am utilizing an FSA table for my scanner program.  
+The FSA table can be found at the top of the 'scanner.cpp' file.  
 The scanner count lines.
 
 ## Invocation
